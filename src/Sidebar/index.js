@@ -104,10 +104,10 @@ export const Sidebar = ({
             onDeleteKeyframe={onDeleteKeyframe}
           />
         )}
-        <History
+        {/* <History
           history={history}
           onRestoreHistory={() => onRestoreHistory()}
-        />
+        /> */}
         {/* <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} /> */}
       </Container>
     </ThemeProvider>

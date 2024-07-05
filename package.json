@@ -1,6 +1,8 @@
 {
   "name": "react-image-annotate",
   "version": "2.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -78,7 +80,8 @@
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
-    "@storybook/react": "^5.3.14",
+    "@storybook/preset-create-react-app": "^8.1.11",
+    "@storybook/react": "^8.1.11",
     "babel-loader": "^8.0.5",
     "babel-preset-react-app": "^7.0.0",
     "gh-pages": "^2.0.1",

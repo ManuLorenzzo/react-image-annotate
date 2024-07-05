@@ -10,7 +10,7 @@ const TransformGrabber = styled("div")(({ theme }) => ({
   width: 8,
   height: 8,
   zIndex: 2,
-  border: "2px solid #FFF",
+  border: "2px solid #444",
   position: "absolute",
 }))
 

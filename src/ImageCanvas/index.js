@@ -60,6 +60,7 @@ type Props = {
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   regionClsList?: Array<string>,
+  classesThatMustBeUnique?: Array<string>,
   regionTagList?: Array<string>,
   allowedArea?: { x: number, y: number, w: number, h: number },
   RegionEditLabel?: Node,
@@ -114,6 +115,7 @@ export const ImageCanvas = ({
   createWithPrimary = false,
   pointDistancePrecision = 0,
   regionClsList,
+  classesThatMustBeUnique,
   regionTagList,
   showCrosshairs,
   showHighlightBox = true,
@@ -314,6 +316,14 @@ export const ImageCanvas = ({
     return highlightedRegions[0]
   }, [regions])
 
+  const uniqueClassesInUse = regions
+    .filter((r) => classesThatMustBeUnique.includes(r.cls))
+    .map((r) => r.cls)
+
+  const filteredAllowedClasses = (regionClsList || []).filter(
+    (c) => !uniqueClassesInUse.includes(c)
+  )
+
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -393,6 +403,7 @@ export const ImageCanvas = ({
               RegionEditLabel={RegionEditLabel}
               onRegionClassAdded={onRegionClassAdded}
               allowComments={allowComments}
+              classesThatMustBeUnique={classesThatMustBeUnique}
             />
           </PreventScrollToParents>
         )}
@@ -400,7 +411,8 @@ export const ImageCanvas = ({
           <div key="topLeftTag" className={classes.fixedRegionLabel}>
             <RegionLabel
               disableClose
-              allowedClasses={regionClsList}
+              regions={regions}
+              allowedClasses={filteredAllowedClasses}
               allowedTags={regionTagList}
               onChange={onChangeRegion}
               onDelete={onDeleteRegion}

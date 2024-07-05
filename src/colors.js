@@ -3,7 +3,6 @@
 import * as muiColors from "@mui/material/colors"
 
 export const colors = [
-  muiColors.red[500],
   muiColors.blue[500],
   muiColors.green[500],
   muiColors.orange[800],

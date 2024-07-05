@@ -6,7 +6,6 @@ import moment from "moment"
 import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
 import { saveToHistory } from "./history-handler.js"
-import colors from "../../colors"
 import fixTwisted from "./fix-twisted"
 import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
 import clamp from "clamp"
@@ -16,6 +15,22 @@ import setInLocalStorage from "../../utils/set-in-local-storage"
 const getRandomId = () => Math.random().toString().split(".")[1]
 
 export default (state: MainLayoutState, action: Action) => {
+  const getColor = () => {
+    const defaultColor = "#ff0000" // Red
+    const foundIndex = state.regionClsList.indexOf(state.selectedCls)
+    if (
+      foundIndex === -1 ||
+      state.selectedCls === undefined ||
+      (state.classesThatMustBeUnique.includes(state.selectedCls) &&
+        (state.annotationType === "image"
+          ? activeImage.regions || []
+          : []
+        ).some((r) => r.cls === state.selectedCls))
+    )
+      return defaultColor
+
+    return state.colors[foundIndex] || defaultColor
+  }
   if (
     state.allowedArea &&
     state.selectedTool !== "modify-allowed-area" &&
@@ -135,7 +150,7 @@ export default (state: MainLayoutState, action: Action) => {
         const clsIndex = state.regionClsList.indexOf(action.region.cls)
         if (clsIndex !== -1) {
           state = setIn(state, ["selectedCls"], action.region.cls)
-          action.region.color = colors[clsIndex % colors.length]
+          action.region.color = getColor()
         }
       }
       if (!isEqual(oldRegion.tags, action.region.tags)) {
@@ -160,6 +175,13 @@ export default (state: MainLayoutState, action: Action) => {
       }
       return state
     }
+
+    case "UPDATE_STATE": {
+      return {
+        ...action.newState,
+      }
+    }
+
     case "SELECT_REGION": {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
@@ -524,13 +546,15 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       let newRegion
-      let defaultRegionCls = state.selectedCls,
-        defaultRegionColor = "#ff0000"
-
-      const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
-      if (clsIndex !== -1) {
-        defaultRegionColor = colors[clsIndex % colors.length]
-      }
+      let defaultRegionCls =
+          state.classesThatMustBeUnique.includes(state.selectedCls) &&
+          (state.annotationType === "image"
+            ? activeImage.regions || []
+            : []
+          ).some((r) => r.cls === state.selectedCls)
+            ? undefined
+            : state.selectedCls,
+        defaultRegionColor = getColor()
 
       switch (state.selectedTool) {
         case "create-point": {
@@ -668,8 +692,12 @@ export default (state: MainLayoutState, action: Action) => {
         )
         .concat(newRegion ? [newRegion] : [])
 
+      // No restablecer selectedCls a undefined después de crear una nueva región
+      // state = setIn(state, ["selectedCls"], undefined)
+
       return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
+
     case "MOUSE_UP": {
       const { x, y } = action
 

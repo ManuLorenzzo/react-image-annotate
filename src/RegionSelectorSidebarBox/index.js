@@ -89,7 +89,7 @@ const RowHeader = () => {
       header
       highlighted={false}
       order={<ReorderIcon className="icon" />}
-      classification={<div style={{ paddingLeft: 10 }}>Class</div>}
+      classification={<div style={{ paddingLeft: 10 }}>Etiqueta</div>}
       area={<PieChartIcon className="icon" />}
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
@@ -175,7 +175,8 @@ export const RegionSelectorSidebarBox = ({
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="Regions"
+        title="Anotaciones"
+        className="image-annotate__annotations"
         subTitle=""
         icon={<RegionIcon style={{ color: grey[700] }} />}
         expandedByDefault

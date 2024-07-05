@@ -46,7 +46,7 @@ export const HistorySidebarBox = ({
       >
         <List>
           {history.length === 0 && (
-            <div className={classes.emptyText}>No History Yet</div>
+            <div className={classes.emptyText}>Sin historial</div>
           )}
           {history.map(({ name, time }, i) => (
             <ListItem button dense key={i}>

@@ -57,6 +57,7 @@ export const ClassSelectionMenu = ({
   selectedCls,
   regionClsList,
   onSelectCls,
+  colors,
 }) => {
   useEffect(() => {
     const keyMapping = {}
@@ -77,7 +78,7 @@ export const ClassSelectionMenu = ({
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="Classifications"
+        title="Etiquetas"
         subTitle=""
         icon={<BallotIcon style={{ color: muiColors.grey[700] }} />}
         expandedByDefault
@@ -88,14 +89,14 @@ export const ClassSelectionMenu = ({
             onClick={() => onSelectCls(label)}
           >
             <Circle
-              style={{ backgroundColor: colors[index % colors.length] }}
+              style={{ backgroundColor: colors[index] || muiColors.grey[700] }}
             />
             <Label className={classnames({ selected: label === selectedCls })}>
               {capitalize(label)}
             </Label>
             <DashSep />
             <Number className={classnames({ selected: label === selectedCls })}>
-              {index < 9 ? `Key [${index + 1}]` : ""}
+              {index < 9 ? `Tecla [${index + 1}]` : ""}
             </Number>
           </LabelContainer>
         ))}

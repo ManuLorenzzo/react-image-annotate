@@ -56,6 +56,7 @@ const FullScreenContainer = styled("div")(({ theme }) => ({
 type Props = {
   state: MainLayoutState,
   RegionEditLabel?: Node,
+  classesThatMustBeUnique: Array<string>,
   dispatch: (Action) => any,
   alwaysShowNextButton?: boolean,
   alwaysShowPrevButton?: boolean,
@@ -71,6 +72,7 @@ export const MainLayout = ({
   alwaysShowPrevButton = false,
   RegionEditLabel,
   onRegionClassAdded,
+  classesThatMustBeUnique,
   hideHeader,
   hideHeaderText,
   hideNext = false,
@@ -143,6 +145,7 @@ export const MainLayout = ({
       allowedArea={state.allowedArea}
       modifyingAllowedArea={state.selectedTool === "modify-allowed-area"}
       regionClsList={state.regionClsList}
+      classesThatMustBeUnique={classesThatMustBeUnique}
       regionTagList={state.regionTagList}
       regions={
         state.annotationType === "image"
@@ -357,6 +360,7 @@ export const MainLayout = ({
                 ),
                 state.regionClsList && (
                   <ClassSelectionMenu
+                    colors={state.colors}
                     selectedCls={state.selectedCls}
                     regionClsList={state.regionClsList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
@@ -393,10 +397,10 @@ export const MainLayout = ({
                     keyframes={state.keyframes}
                   />
                 ),
-                <HistorySidebarBox
-                  history={state.history}
-                  onRestoreHistory={action("RESTORE_HISTORY")}
-                />,
+                // <HistorySidebarBox
+                //   history={state.history}
+                //   onRestoreHistory={action("RESTORE_HISTORY")}
+                // />,
               ].filter(Boolean)}
             >
               {canvas}

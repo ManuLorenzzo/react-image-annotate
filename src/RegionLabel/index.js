@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useRef, memo } from "react"
+import React, { useRef, memo, useEffect } from "react"
 import Paper from "@mui/material/Paper"
 import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
@@ -13,14 +13,15 @@ import TrashIcon from "@mui/icons-material/Delete"
 import CheckIcon from "@mui/icons-material/Check"
 import TextField from "@mui/material/TextField"
 import Select from "react-select"
-import CreatableSelect from "react-select/creatable"
 
 import { asMutable } from "seamless-immutable"
+import { selectStyles } from "./SelectStyles.js"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
 
 type Props = {
+  regions: Array<Region>,
   region: Region,
   editing?: boolean,
   allowedClasses?: Array<string>,
@@ -36,6 +37,7 @@ type Props = {
 }
 
 export const RegionLabel = ({
+  regions,
   region,
   editing,
   allowedClasses,
@@ -49,10 +51,9 @@ export const RegionLabel = ({
 }: Props) => {
   const classes = useStyles()
   const commentInputRef = useRef(null)
-  const onCommentInputClick = (_) => {
-    // The TextField wraps the <input> tag with two divs
-    const commentInput = commentInputRef.current.children[0].children[0]
 
+  const onCommentInputClick = (_) => {
+    const commentInput = commentInputRef.current.children[0].children[0]
     if (commentInput) return commentInput.focus()
   }
 
@@ -60,9 +61,9 @@ export const RegionLabel = ({
     <ThemeProvider theme={theme}>
       <Paper
         onClick={() => (!editing ? onOpen(region) : null)}
-        className={classnames(classes.regionInfo, {
+        className={`${classnames(classes.regionInfo, {
           highlighted: region.highlighted,
-        })}
+        })} image-annotator__annotation-popup`}
       >
         {!editing ? (
           <div>
@@ -101,7 +102,7 @@ export const RegionLabel = ({
                   textShadow: "0px 0px 5px rgba(0,0,0,0.4)",
                 }}
               >
-                {region.type}
+                {region.cls || "Sin etiqueta"}
               </div>
               <div style={{ flexGrow: 1 }} />
               <IconButton
@@ -116,20 +117,25 @@ export const RegionLabel = ({
             </div>
             {(allowedClasses || []).length > 0 && (
               <div style={{ marginTop: 6 }}>
-                <CreatableSelect
-                  placeholder="Classification"
+                <Select
+                  placeholder="Elija etiqueta..."
                   onChange={(o, actionMeta) => {
-                    if (actionMeta.action == "create-option") {
+                    if (actionMeta.action === "create-option") {
                       onRegionClassAdded(o.value)
                     }
                     return onChange({
-                      ...(region: any),
+                      ...region,
                       cls: o.value,
                     })
                   }}
-                  value={
-                    region.cls ? { label: region.cls, value: region.cls } : null
-                  }
+                  styles={selectStyles}
+                  value={(() => {
+                    const found = allowedClasses.find(
+                      (cls) => cls === region.cls
+                    )
+                    if (!found) return null
+                    return { label: found, value: found }
+                  })()}
                   options={asMutable(
                     allowedClasses.map((c) => ({ value: c, label: c }))
                   )}
@@ -141,7 +147,7 @@ export const RegionLabel = ({
                 <Select
                   onChange={(newTags) =>
                     onChange({
-                      ...(region: any),
+                      ...region,
                       tags: newTags.map((t) => t.value),
                     })
                   }
@@ -169,7 +175,7 @@ export const RegionLabel = ({
                 onClick={onCommentInputClick}
                 value={region.comment || ""}
                 onChange={(event) =>
-                  onChange({ ...(region: any), comment: event.target.value })
+                  onChange({ ...region, comment: event.target.value })
                 }
               />
             )}

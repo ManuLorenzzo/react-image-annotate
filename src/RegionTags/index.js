@@ -28,9 +28,11 @@ export const RegionTags = ({
   RegionEditLabel,
   onRegionClassAdded,
   allowComments,
+  classesThatMustBeUnique,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
+
   return regions
     .filter((r) => r.visible || r.visible === undefined)
     .map((region) => {
@@ -48,6 +50,16 @@ export const RegionTags = ({
             top: pbox.y - margin / 2,
           }
         : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
+
+      const uniqueClassesInUse = regions
+        .filter(
+          (r) => classesThatMustBeUnique.includes(r.cls) && r.id !== region.id
+        )
+        .map((r) => r.cls)
+
+      const filteredAllowedClasses = (regionClsList || []).filter(
+        (c) => !uniqueClassesInUse.includes(c)
+      )
       if (region.locked) {
         return (
           <div
@@ -77,6 +89,7 @@ export const RegionTags = ({
           </div>
         )
       }
+
       return (
         <div
           key={region.id}
@@ -108,7 +121,7 @@ export const RegionTags = ({
               : {})}
           >
             <RegionLabel
-              allowedClasses={regionClsList}
+              allowedClasses={filteredAllowedClasses}
               allowedTags={regionTagList}
               onOpen={onBeginRegionEdit}
               onChange={onChangeRegion}
