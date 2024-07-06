@@ -465,7 +465,7 @@ export const ImageCanvas = ({
             )}
             <canvas
               style={{ opacity: 0.25 }}
-              className={classes.canvas}
+              className={classes.canvas + " image-annotate__canvas"}
               ref={canvasEl}
             />
             <RegionShapes

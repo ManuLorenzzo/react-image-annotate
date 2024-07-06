@@ -173,31 +173,32 @@ export const RegionSelectorSidebarBox = ({
 }) => {
   const classes = useStyles()
   return (
-    <ThemeProvider theme={theme}>
-      <SidebarBoxContainer
-        title="Anotaciones"
-        className="image-annotate__annotations"
-        subTitle=""
-        icon={<RegionIcon style={{ color: grey[700] }} />}
-        expandedByDefault
-      >
-        <div className={classes.container}>
-          <MemoRowHeader />
-          <HeaderSep />
-          {regions.map((r, i) => (
-            <MemoRow
-              key={r.id}
-              {...r}
-              region={r}
-              index={i}
-              onSelectRegion={onSelectRegion}
-              onDeleteRegion={onDeleteRegion}
-              onChangeRegion={onChangeRegion}
-            />
-          ))}
-        </div>
-      </SidebarBoxContainer>
-    </ThemeProvider>
+    <div className="image-annotate__annotations">
+      <ThemeProvider theme={theme}>
+        <SidebarBoxContainer
+          title="Anotaciones"
+          subTitle=""
+          icon={<RegionIcon style={{ color: grey[700] }} />}
+          expandedByDefault
+        >
+          <div className={classes.container}>
+            <MemoRowHeader />
+            <HeaderSep />
+            {regions.map((r, i) => (
+              <MemoRow
+                key={r.id}
+                {...r}
+                region={r}
+                index={i}
+                onSelectRegion={onSelectRegion}
+                onDeleteRegion={onDeleteRegion}
+                onChangeRegion={onChangeRegion}
+              />
+            ))}
+          </div>
+        </SidebarBoxContainer>
+      </ThemeProvider>
+    </div>
   )
 }
 

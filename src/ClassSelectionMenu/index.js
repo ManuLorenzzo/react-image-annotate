@@ -76,33 +76,41 @@ export const ClassSelectionMenu = ({
   }, [regionClsList, selectedCls])
 
   return (
-    <ThemeProvider theme={theme}>
-      <SidebarBoxContainer
-        title="Etiquetas"
-        subTitle=""
-        icon={<BallotIcon style={{ color: muiColors.grey[700] }} />}
-        expandedByDefault
-      >
-        {regionClsList.map((label, index) => (
-          <LabelContainer
-            className={classnames({ selected: label === selectedCls })}
-            onClick={() => onSelectCls(label)}
-          >
-            <Circle
-              style={{ backgroundColor: colors[index] || muiColors.grey[700] }}
-            />
-            <Label className={classnames({ selected: label === selectedCls })}>
-              {capitalize(label)}
-            </Label>
-            <DashSep />
-            <Number className={classnames({ selected: label === selectedCls })}>
-              {index < 9 ? `Tecla [${index + 1}]` : ""}
-            </Number>
-          </LabelContainer>
-        ))}
-        <Box pb={2} />
-      </SidebarBoxContainer>
-    </ThemeProvider>
+    <div className="image-annotate__legend">
+      <ThemeProvider theme={theme}>
+        <SidebarBoxContainer
+          title="Etiquetas"
+          subTitle=""
+          icon={<BallotIcon style={{ color: muiColors.grey[700] }} />}
+          expandedByDefault
+        >
+          {regionClsList.map((label, index) => (
+            <LabelContainer
+              className={classnames({ selected: label === selectedCls })}
+              onClick={() => onSelectCls(label)}
+            >
+              <Circle
+                style={{
+                  backgroundColor: colors[index] || muiColors.grey[700],
+                }}
+              />
+              <Label
+                className={classnames({ selected: label === selectedCls })}
+              >
+                {capitalize(label)}
+              </Label>
+              <DashSep />
+              <Number
+                className={classnames({ selected: label === selectedCls })}
+              >
+                {index < 9 ? `Tecla [${index + 1}]` : ""}
+              </Number>
+            </LabelContainer>
+          ))}
+          <Box pb={2} />
+        </SidebarBoxContainer>
+      </ThemeProvider>
+    </div>
   )
 }
 
