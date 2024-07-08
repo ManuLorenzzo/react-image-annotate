@@ -64,6 +64,9 @@ export const RegionLabel = ({
         className={`${classnames(classes.regionInfo, {
           highlighted: region.highlighted,
         })} image-annotator__annotation-popup`}
+        style={{
+          border: `0.1rem solid ${region.color}`,
+        }}
       >
         {!editing ? (
           <div>
