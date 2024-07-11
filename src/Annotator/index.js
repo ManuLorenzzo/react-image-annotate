@@ -25,6 +25,7 @@ import defaultColors from "../colors.js"
 const Annotator = forwardRef(
   (
     {
+      referenceImage,
       images,
       allowedArea,
       selectedImage = images && images.length > 0 ? 0 : undefined,
@@ -164,6 +165,7 @@ const Annotator = forwardRef(
     return (
       <SettingsProvider>
         <MainLayout
+          referenceImage={referenceImage}
           RegionEditLabel={RegionEditLabel}
           alwaysShowNextButton={Boolean(onNextImage)}
           alwaysShowPrevButton={Boolean(onPrevImage)}

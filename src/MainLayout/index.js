@@ -54,6 +54,7 @@ const FullScreenContainer = styled("div")(({ theme }) => ({
 }))
 
 type Props = {
+  referenceImageSrc?: string,
   state: MainLayoutState,
   RegionEditLabel?: Node,
   classesThatMustBeUnique: Array<string>,
@@ -66,6 +67,7 @@ type Props = {
 }
 
 export const MainLayout = ({
+  referenceImage,
   state,
   dispatch,
   alwaysShowNextButton = false,
@@ -133,6 +135,7 @@ export const MainLayout = ({
   const canvas = (
     <ImageCanvas
       {...settings}
+      referenceImage={referenceImage}
       showCrosshairs={
         settings.showCrosshairs &&
         !["select", "pan", "zoom"].includes(state.selectedTool)

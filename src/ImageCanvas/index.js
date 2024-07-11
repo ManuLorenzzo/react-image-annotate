@@ -41,6 +41,7 @@ const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
 
 type Props = {
+  referenceImageSrc?: string,
   regions: Array<Region>,
   imageSrc?: string,
   videoSrc?: string,
@@ -101,6 +102,7 @@ const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
 }
 
 export const ImageCanvas = ({
+  referenceImage,
   regions,
   imageSrc,
   videoSrc,
@@ -464,7 +466,7 @@ export const ImageCanvas = ({
               />
             )}
             <canvas
-              style={{ opacity: 0.25 }}
+              style={{ opacity: 0.25, position: "relative" }}
               className={classes.canvas + " image-annotate__canvas"}
               ref={canvasEl}
             />
@@ -487,6 +489,7 @@ export const ImageCanvas = ({
               onChangeVideoTime={onChangeVideoTime}
               onChangeVideoPlaying={onChangeVideoPlaying}
             />
+            {referenceImage && referenceImage}
           </>
         </PreventScrollToParents>
         <div className={classes.zoomIndicator}>
